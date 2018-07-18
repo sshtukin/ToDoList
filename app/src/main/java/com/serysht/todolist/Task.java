@@ -20,21 +20,14 @@ public class Task {
         mIsDone = false;
     }
 
-//
-//    public Task(String title) {
-//        mUUID = UUID.randomUUID();
-//        mTitle = title;
-//        mAdditional = "";
-//        mIsDone = false;
-//    }
-//
-//    public Task(String id, String title, String extended, boolean isDone) {
-//        mUUID = UUID.fromString(id);
-//        mTitle = title;
-//        mAdditional = extended;
-//        mIsDone = isDone;
-//    }
-
+    public Task(String uuid, String title, String additional, long date, boolean dateEnabled, boolean isDone) {
+        mUUID = UUID.fromString(uuid);
+        mTitle = title;
+        mAdditional = additional;
+        mDate = new Date(date);
+        mDateEnabled = dateEnabled;
+        mIsDone = isDone;
+    }
 
     public UUID getUUID() {
         return mUUID;
