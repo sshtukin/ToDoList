@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ public class TaskTitleListFragment extends Fragment{
     private TaskAdapter mTaskAdapter;
     private TaskManager mTaskManager;
     private List<Task> mTaskList;
+    private FloatingActionButton mFloatingActionButton;
 
     @Nullable
     @Override
@@ -31,6 +34,30 @@ public class TaskTitleListFragment extends Fragment{
         mRecyclerView.setHasFixedSize(true);
 
         mTaskManager = TaskManager.get(getActivity());
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                Task task = mTaskList.get(viewHolder.getAdapterPosition());
+                mTaskManager.deleteTask(task.getUUID());
+                updateRecyclerView();
+            }
+        }).attachToRecyclerView(mRecyclerView);
+
+        mFloatingActionButton = view.findViewById(R.id.floatingActionButton);
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               //add
+                updateRecyclerView();
+            }
+        });
+
 
         updateRecyclerView();
         return view;
