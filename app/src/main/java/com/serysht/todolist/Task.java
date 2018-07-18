@@ -15,7 +15,16 @@ public class Task {
         mUUID = UUID.randomUUID();
         mTitle = "";
         mAdditional = "";
-        mDate = null;
+        mDate = new Date();
+        mDateEnabled = false;
+        mIsDone = false;
+    }
+
+    public Task(String title){
+        mUUID = UUID.randomUUID();
+        mTitle = title;
+        mAdditional = "";
+        mDate = new Date();
         mDateEnabled = false;
         mIsDone = false;
     }
