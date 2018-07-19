@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -15,9 +16,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-public class TaskTitleListFragment extends Fragment{
+public class TitlesListFragment extends Fragment{
     private RecyclerView mRecyclerView;
     private TaskAdapter mTaskAdapter;
     private TaskManager mTaskManager;
@@ -26,18 +28,22 @@ public class TaskTitleListFragment extends Fragment{
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_task_title_list, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-        mRecyclerView = view.findViewById(R.id.recycler_view_titles);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRecyclerView.setHasFixedSize(true);
+        View view = inflater.inflate(R.layout.fragment_titles_list,
+                container, false);
 
         mTaskManager = TaskManager.get(getActivity());
 
+        mRecyclerView = view.findViewById(R.id.recycler_view);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRecyclerView.setHasFixedSize(true);
+
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                  RecyclerView.ViewHolder target) {
                 return false;
             }
 
@@ -53,8 +59,15 @@ public class TaskTitleListFragment extends Fragment{
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //add
-                updateRecyclerView();
+                FragmentManager manager = getFragmentManager();
+                CreateDialogFragment dialog = new CreateDialogFragment();
+                dialog.show(manager, "LOL");
+                //updateRecyclerView();
+//
+//                DatePickerFragment dialog = DatePickerFragment.newInstance(new Date());
+//                dialog.setTargetFragment(OpenedListFragment.this, 1);
+//                dialog.show(manager, "LOL");
+//                updateRecyclerView();
             }
         });
 
@@ -71,7 +84,6 @@ public class TaskTitleListFragment extends Fragment{
 
     public void updateRecyclerView() {
         mTaskList = mTaskManager.getTaskList();
-
         if (mTaskAdapter == null) {
             mTaskAdapter = new TaskAdapter();
             mTaskAdapter.setTasks(mTaskList);
@@ -88,8 +100,8 @@ public class TaskTitleListFragment extends Fragment{
         Task mTask;
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
-            super(layoutInflater.inflate(R.layout.task_title_item, parent, false));
-            mTaskTitle = (TextView) itemView.findViewById(R.id.task_title);
+            super(layoutInflater.inflate(R.layout.title_item, parent, false));
+            mTaskTitle = itemView.findViewById(R.id.task_title);
             itemView.setOnClickListener(this);
         }
 
@@ -100,7 +112,8 @@ public class TaskTitleListFragment extends Fragment{
 
         @Override
         public void onClick(View v) {
-            Intent intent = Main2Activity.newIntent(getActivity(), mTask.getUUID(), getAdapterPosition());
+            Intent intent = OpenedListActivity.newIntent(getActivity(),
+                    mTask.getUUID(), getAdapterPosition());
             startActivity(intent);
         }
     }

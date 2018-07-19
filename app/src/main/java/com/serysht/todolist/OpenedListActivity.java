@@ -9,32 +9,32 @@ import android.os.Bundle;
 
 import java.util.UUID;
 
-public class Main2Activity extends AppCompatActivity {
+public class OpenedListActivity extends AppCompatActivity {
     public static final String EXTRA_TASK_ID = "task_id";
     public static final String EXTRA_POSITION = "position";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_fragment_holder);
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_TASK_ID);
         int position = (int) getIntent().getSerializableExtra(EXTRA_POSITION);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.frame_layout);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_holder);
 
         if (fragment == null) {
-            fragment = TaskOpenedListFragment.newInstance(crimeId, position);
+            fragment = OpenedListFragment.newInstance(crimeId, position);
             fragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, fragment)
+                    .add(R.id.fragment_holder, fragment)
                     .commit();
         }
 
     }
 
     public static Intent newIntent(Context context, UUID taskId, int position) {
-        Intent intent = new Intent(context, Main2Activity.class);
+        Intent intent = new Intent(context, OpenedListActivity.class);
         intent.putExtra(EXTRA_TASK_ID, taskId);
         intent.putExtra(EXTRA_POSITION, position);
         return intent;

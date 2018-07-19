@@ -1,9 +1,12 @@
 package com.serysht.todolist;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
@@ -16,10 +19,11 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class TaskOpenedListFragment extends Fragment {
+public class OpenedListFragment extends Fragment {
     private static final String TASK_ID = "task_id";
     private static final String TASK_POSITION = "position";
 
@@ -42,6 +46,7 @@ public class TaskOpenedListFragment extends Fragment {
 
         mTaskManager = TaskManager.get(getActivity());
         mTask = mTaskManager.getTaskById(taskId);
+
     }
 
     @Nullable
@@ -71,6 +76,19 @@ public class TaskOpenedListFragment extends Fragment {
         updateRecyclerView();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == 1) {
+            Date date = (Date) data
+                    .getSerializableExtra("lol");
+            mTask.setDate(date);
+//            mDateButton.setText(mCrime.getDate().toString());
+        }
+    }
+
     public void updateRecyclerView() {
         List<Task> mTaskList = mTaskManager.getTaskList();
 
@@ -87,22 +105,36 @@ public class TaskOpenedListFragment extends Fragment {
 
     private class TaskHolder extends RecyclerView.ViewHolder{
         private EditText mTitle;
-        private EditText mExtended;
+        private EditText mAdditional;
         private CheckBox mCheckBox;
-        private Button mButton;
+        private Button mSaveButton;
+        private Button mDateButton;
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
-            super(layoutInflater.inflate(R.layout.task_opened_item, parent, false));
+            super(layoutInflater.inflate(R.layout.opened_task_item, parent, false));
             mTitle = (EditText) itemView.findViewById(R.id.task_title);
-            mExtended = (EditText) itemView.findViewById(R.id.task_additional);
-            mCheckBox = (CheckBox) itemView.findViewById(R.id.checkbox);
+            mAdditional = (EditText) itemView.findViewById(R.id.task_additional);
+            mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBox);
             mButton = (Button) itemView.findViewById(R.id.save_button);
+
+            mDateButton = (Button) itemView.findViewById(R.id.date_button);
+            mDateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager manager = getFragmentManager();
+                    DatePickerFragment dialog = DatePickerFragment.newInstance(new Date());
+                    dialog.setTargetFragment(OpenedListFragment.this, 1);
+                    dialog.show(manager, "LOL");
+                    updateRecyclerView();
+                }
+            });
+
         }
 
         public void bind(Task task){
             mTask = task;
             mTitle.setText(task.getTitle());
-            mExtended.setText(task.getAdditional());
+            mAdditional.setText(task.getAdditional());
             mCheckBox.setChecked(mTask.isDone());
         }
     }
@@ -133,11 +165,11 @@ public class TaskOpenedListFragment extends Fragment {
         }
     }
 
-    public static TaskOpenedListFragment newInstance(UUID taskId, int position) {
+    public static OpenedListFragment newInstance(UUID taskId, int position) {
         Bundle args = new Bundle();
         args.putSerializable(TASK_ID, taskId);
         args.putInt(TASK_POSITION, position);
-        TaskOpenedListFragment fragment = new TaskOpenedListFragment();
+        OpenedListFragment fragment = new OpenedListFragment();
         fragment.setArguments(args);
         return fragment;
     }

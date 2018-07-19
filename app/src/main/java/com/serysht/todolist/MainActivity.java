@@ -10,16 +10,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
+        setContentView(R.layout.activity_fragment_holder);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.frame_layout);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_holder);
 
         if (fragment == null) {
-            fragment = new TaskTitleListFragment();
+            fragment = new TitlesListFragment();
             fragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, fragment)
+                    .add(R.id.fragment_holder, fragment)
                     .commit();
         }
     }
