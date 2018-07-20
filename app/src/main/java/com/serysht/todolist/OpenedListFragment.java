@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -26,6 +28,8 @@ import java.util.UUID;
 public class OpenedListFragment extends Fragment {
     private static final String TASK_ID = "task_id";
     private static final String TASK_POSITION = "position";
+    private static final int REQUEST_CODE = 0;
+    public static final String EXTRA_DATE = "date";
 
     private EditText mTitle;
     private EditText mAdditional;
@@ -36,6 +40,7 @@ public class OpenedListFragment extends Fragment {
     private Task mTask;
     private TaskAdapter mTaskAdapter;
     private int mPosition;
+    public TextView mDate;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,11 +86,12 @@ public class OpenedListFragment extends Fragment {
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if (requestCode == 1) {
+        if (requestCode == REQUEST_CODE) {
             Date date = (Date) data
-                    .getSerializableExtra("lol");
+                    .getSerializableExtra(EXTRA_DATE);
             mTask.setDate(date);
-//            mDateButton.setText(mCrime.getDate().toString());
+            mTaskManager.updateTask(mTask);
+            mDate.setText(date.toString());
         }
     }
 
@@ -108,24 +114,27 @@ public class OpenedListFragment extends Fragment {
         private EditText mAdditional;
         private CheckBox mCheckBox;
         private Button mSaveButton;
-        private Button mDateButton;
+        private ImageButton mDateButton;
+
+        private Task mTask;
+
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
-            super(layoutInflater.inflate(R.layout.opened_task_item, parent, false));
+            super(layoutInflater.inflate(R.layout.item_opened_task, parent, false));
             mTitle = (EditText) itemView.findViewById(R.id.task_title);
             mAdditional = (EditText) itemView.findViewById(R.id.task_additional);
             mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBox);
-            mButton = (Button) itemView.findViewById(R.id.save_button);
+            mButton = (Button) itemView.findViewById(R.id.save_opened_button);
+            mDate = itemView.findViewById(R.id.date_text_view);
 
-            mDateButton = (Button) itemView.findViewById(R.id.date_button);
+            mDateButton = itemView.findViewById(R.id.date_opened_button);
             mDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     FragmentManager manager = getFragmentManager();
-                    DatePickerFragment dialog = DatePickerFragment.newInstance(new Date());
-                    dialog.setTargetFragment(OpenedListFragment.this, 1);
-                    dialog.show(manager, "LOL");
-                    updateRecyclerView();
+                    DatePickerFragment dialog = DatePickerFragment.newInstance(mTask.getDate());
+                    dialog.setTargetFragment(OpenedListFragment.this, REQUEST_CODE);
+                    dialog.show(manager, DatePickerFragment.TAG);
                 }
             });
 
@@ -136,6 +145,7 @@ public class OpenedListFragment extends Fragment {
             mTitle.setText(task.getTitle());
             mAdditional.setText(task.getAdditional());
             mCheckBox.setChecked(mTask.isDone());
+            mDate.setText(task.getDate().toString());
         }
     }
 

@@ -1,5 +1,6 @@
 package com.serysht.todolist;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -16,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class TitlesListFragment extends Fragment{
@@ -25,6 +26,7 @@ public class TitlesListFragment extends Fragment{
     private TaskManager mTaskManager;
     private List<Task> mTaskList;
     private FloatingActionButton mFloatingActionButton;
+    private static final int REQUEST_CODE = 0;
 
     @Nullable
     @Override
@@ -39,6 +41,11 @@ public class TitlesListFragment extends Fragment{
         mRecyclerView = view.findViewById(R.id.recycler_view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRecyclerView.setHasFixedSize(true);
+
+
+        RecyclerView.ItemDecoration itemDecoration =
+                new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
+        mRecyclerView.addItemDecoration(itemDecoration);
 
         new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
             @Override
@@ -60,17 +67,12 @@ public class TitlesListFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FragmentManager manager = getFragmentManager();
-                CreateDialogFragment dialog = new CreateDialogFragment();
-                dialog.show(manager, "LOL");
-                //updateRecyclerView();
-//
-//                DatePickerFragment dialog = DatePickerFragment.newInstance(new Date());
-//                dialog.setTargetFragment(OpenedListFragment.this, 1);
-//                dialog.show(manager, "LOL");
-//                updateRecyclerView();
+                CreateDialogFragment dialog = CreateDialogFragment.newInstance();
+                dialog.setTargetFragment(TitlesListFragment.this, REQUEST_CODE);
+                dialog.show(manager, CreateDialogFragment.TAG);
+
             }
         });
-
 
         updateRecyclerView();
         return view;
@@ -80,6 +82,17 @@ public class TitlesListFragment extends Fragment{
     public void onResume() {
         super.onResume();
         updateRecyclerView();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE) {
+            updateRecyclerView();
+        }
     }
 
     public void updateRecyclerView() {
@@ -100,7 +113,7 @@ public class TitlesListFragment extends Fragment{
         Task mTask;
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
-            super(layoutInflater.inflate(R.layout.title_item, parent, false));
+            super(layoutInflater.inflate(R.layout.item_title, parent, false));
             mTaskTitle = itemView.findViewById(R.id.task_title);
             itemView.setOnClickListener(this);
         }
