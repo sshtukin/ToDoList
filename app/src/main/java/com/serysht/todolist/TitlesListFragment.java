@@ -1,23 +1,26 @@
 package com.serysht.todolist;
 
-import android.app.Activity;
+ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+ import java.text.DateFormat;
+ import java.util.ArrayList;
 import java.util.List;
 
 public class TitlesListFragment extends Fragment{
@@ -25,15 +28,20 @@ public class TitlesListFragment extends Fragment{
     private TaskAdapter mTaskAdapter;
     private TaskManager mTaskManager;
     private List<Task> mTaskList;
-    private FloatingActionButton mFloatingActionButton;
-    private static final int REQUEST_CODE = 0;
+    public static final int REQUEST_CODE = 0;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_titles_list,
+        final View view = inflater.inflate(R.layout.fragment_titles_list,
                 container, false);
 
         mTaskManager = TaskManager.get(getActivity());
@@ -59,20 +67,12 @@ public class TitlesListFragment extends Fragment{
                 Task task = mTaskList.get(viewHolder.getAdapterPosition());
                 mTaskManager.deleteTask(task.getUUID());
                 updateRecyclerView();
+                Snackbar
+                        .make(view, "Deleted", Snackbar.LENGTH_SHORT)
+                        .show();
             }
         }).attachToRecyclerView(mRecyclerView);
 
-        mFloatingActionButton = view.findViewById(R.id.floatingActionButton);
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getFragmentManager();
-                CreateDialogFragment dialog = CreateDialogFragment.newInstance();
-                dialog.setTargetFragment(TitlesListFragment.this, REQUEST_CODE);
-                dialog.show(manager, CreateDialogFragment.TAG);
-
-            }
-        });
 
         updateRecyclerView();
         return view;
@@ -110,17 +110,27 @@ public class TitlesListFragment extends Fragment{
 
     private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView mTaskTitle;
+        TextView mTaskDate;
+        TextView mTaskAdditional;
         Task mTask;
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
             super(layoutInflater.inflate(R.layout.item_title, parent, false));
             mTaskTitle = itemView.findViewById(R.id.task_title);
+            mTaskDate = itemView.findViewById(R.id.task_date);
+            mTaskAdditional = itemView.findViewById(R.id.task_addtional_item);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Task task){
             mTask = task;
             mTaskTitle.setText(task.getTitle());
+            mTaskDate.setText(DateFormat.getDateInstance().format(mTask.getDate()));
+            if (task.getAdditional().equals("")){
+                mTaskAdditional.setVisibility(View.GONE);
+            }
+
+            mTaskAdditional.setText(task.getAdditional());
         }
 
         @Override
