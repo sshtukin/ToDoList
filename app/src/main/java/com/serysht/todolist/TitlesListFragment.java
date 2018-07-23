@@ -75,6 +75,28 @@ public class TitlesListFragment extends Fragment{
 
 
         updateRecyclerView();
+//        Task task = new Task();
+//        task.setTitle("wfijwefjiowejfoiwejfiowejfiowefioweiofjweiogtewifrjwefjiewjpewjoiwejwejowejeoweojweovjiweovjowejoewjvowejvwejvowev");
+//        task.setAdditional("wefjweifjewoifjewojfowejfowejfowejfowjfoewfijwefjiowejfoiwejfiowejfiowefioweiofjweiogtewifrjwefjiewjpewjoiwejwejowejeoweojweovjiweovjowejoewjvowejvwejvowev");
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+//        mTaskManager.addTask(task);
+
         return view;
     }
 
@@ -125,7 +147,11 @@ public class TitlesListFragment extends Fragment{
         public void bind(Task task){
             mTask = task;
             mTaskTitle.setText(task.getTitle());
+            if (!mTask.isDateEnabled()){
+                mTaskDate.setVisibility(View.INVISIBLE);
+            }
             mTaskDate.setText(DateFormat.getDateInstance().format(mTask.getDate()));
+
             if (task.getAdditional().equals("")){
                 mTaskAdditional.setVisibility(View.GONE);
             }

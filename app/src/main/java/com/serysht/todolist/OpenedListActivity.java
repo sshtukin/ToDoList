@@ -16,18 +16,18 @@ public class OpenedListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_opened_list);
 
         UUID crimeId = (UUID) getIntent().getSerializableExtra(EXTRA_TASK_ID);
         int position = (int) getIntent().getSerializableExtra(EXTRA_POSITION);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.fragment_holder);
+        Fragment fragment = fragmentManager.findFragmentById(R.id.frame_layout);
 
         if (fragment == null) {
             fragment = OpenedListFragment.newInstance(crimeId, position);
             fragmentManager.beginTransaction()
-                    .add(R.id.fragment_holder, fragment)
+                    .add(R.id.frame_layout, fragment)
                     .commit();
         }
 

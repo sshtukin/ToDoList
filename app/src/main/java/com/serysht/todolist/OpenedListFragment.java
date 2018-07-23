@@ -11,6 +11,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SnapHelper;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,16 +34,13 @@ public class OpenedListFragment extends Fragment {
     private static final int REQUEST_CODE = 0;
     public static final String EXTRA_DATE = "date";
 
-    private EditText mTitle;
-    private EditText mAdditional;
-    private Button mButton;
-    private CheckBox mCheckBox;
+    public Button mDateButton;
     private TaskManager mTaskManager;
     private RecyclerView mRecyclerView;
     private Task mTask;
     private TaskAdapter mTaskAdapter;
     private int mPosition;
-    public TextView mDate;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,9 +89,10 @@ public class OpenedListFragment extends Fragment {
         if (requestCode == REQUEST_CODE) {
             Date date = (Date) data
                     .getSerializableExtra(EXTRA_DATE);
+            mTask.setDateEnabled(true);
             mTask.setDate(date);
             mTaskManager.updateTask(mTask);
-            mDate.setText(date.toString());
+            mDateButton.setText(DateFormat.getDateInstance().format(date));
         }
     }
 
@@ -114,20 +115,52 @@ public class OpenedListFragment extends Fragment {
         private EditText mAdditional;
         private CheckBox mCheckBox;
         private Button mSaveButton;
-        private ImageButton mDateButton;
-
         private Task mTask;
 
 
         public TaskHolder(LayoutInflater layoutInflater, ViewGroup parent) {
             super(layoutInflater.inflate(R.layout.item_opened_task, parent, false));
             mTitle = (EditText) itemView.findViewById(R.id.task_title);
-            mAdditional = (EditText) itemView.findViewById(R.id.task_additional);
-            mCheckBox = (CheckBox) itemView.findViewById(R.id.checkBox);
-            mButton = (Button) itemView.findViewById(R.id.save_opened_button);
-            mDate = itemView.findViewById(R.id.date_text_view);
+            mTitle.addTextChangedListener(new TextWatcher() {
 
-            mDateButton = itemView.findViewById(R.id.date_opened_button);
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    // Здесь намеренно оставлено пустое место
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                    mCrime.setTitle(s.toString());
+//                    updateCrime();
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mTask.setTitle(s.toString());
+                    mTaskManager.updateTask(mTask);
+                }
+            });
+
+            mAdditional = (EditText) itemView.findViewById(R.id.task_additional);
+            mAdditional.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mTask.setAdditional(s.toString());
+                    mTaskManager.updateTask(mTask);
+                }
+            });
+
+            mDateButton = itemView.findViewById(R.id.task_opened_date_opened_button);
             mDateButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -144,8 +177,9 @@ public class OpenedListFragment extends Fragment {
             mTask = task;
             mTitle.setText(task.getTitle());
             mAdditional.setText(task.getAdditional());
-            mCheckBox.setChecked(mTask.isDone());
-            mDate.setText(task.getDate().toString());
+            if (task.isDateEnabled()) {
+                mDateButton.setText(DateFormat.getDateInstance().format(mTask.getDate()));
+            }
         }
     }
 
@@ -183,4 +217,5 @@ public class OpenedListFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
 }

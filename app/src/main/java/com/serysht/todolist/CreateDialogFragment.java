@@ -95,6 +95,7 @@ public class CreateDialogFragment extends DialogFragment {
                     .getSerializableExtra(EXTRA_DATE);
 
             mTask.setDate(date);
+            mTask.setDateEnabled(true);
             mDateButton.setText(DateFormat.getDateInstance().format(mTask.getDate()));
         }
     }
