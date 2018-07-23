@@ -27,12 +27,12 @@ public class DatePickerFragment extends DialogFragment {
                 .inflate(R.layout.dialog_date, null);
 
         final Date date = (Date) getArguments().getSerializable(TAG);
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
-
 
         final DatePicker mDatePicker = view.findViewById(R.id.dialog_date_picker);
         mDatePicker.init(year, month, day, null);

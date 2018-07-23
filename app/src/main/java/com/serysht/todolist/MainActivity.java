@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
                 CreateDialogFragment dialog = CreateDialogFragment.newInstance();
                 dialog.setTargetFragment(finalFragment, TitlesListFragment.REQUEST_CODE);
                 dialog.show(fragmentManager, CreateDialogFragment.TAG);
-
             }
         });
-
     }
 }
