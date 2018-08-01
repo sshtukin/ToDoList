@@ -1,6 +1,10 @@
 package com.serysht.todolist;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +19,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 public class CreateDialogFragment extends DialogFragment {
@@ -96,6 +101,7 @@ public class CreateDialogFragment extends DialogFragment {
 
             mTask.setDate(date);
             mTask.setDateEnabled(true);
+
             mDateButton.setText(DateFormat.getDateInstance().format(mTask.getDate()));
         }
     }

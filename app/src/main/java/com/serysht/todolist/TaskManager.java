@@ -8,6 +8,7 @@ import com.serysht.todolist.database.TaskBaseHelper;
 import com.serysht.todolist.database.TaskCursorWrapper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -73,6 +74,7 @@ public class TaskManager {
         } finally {
             cursor.close();
         }
+        Collections.reverse(mTaskList);
         return mTaskList;
     }
 

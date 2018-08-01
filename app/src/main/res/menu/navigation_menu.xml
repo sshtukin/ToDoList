@@ -7,7 +7,7 @@
         android:title="Created by Sergey Shtukin" />
 
     <item android:title="Here will be theme switch"/>
-    <item android:title="Here will be Google Drive" />
+
 
 
 </menu>

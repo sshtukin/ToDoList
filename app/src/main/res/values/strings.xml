@@ -3,4 +3,6 @@
     <string name="title">Title</string>
     <string name="additional_text">Additional Text</string>
     <string name="save">Save</string>
+    <string name="snackbar_deleted">Deleted</string>
+    <string name="snackbar_undo">UNDO</string>
 </resources>

@@ -16,8 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
- import java.text.DateFormat;
+import java.text.DateFormat;
  import java.util.ArrayList;
 import java.util.List;
 
@@ -54,33 +55,42 @@ public class TitlesListFragment extends Fragment{
                 new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
+                                    ItemTouchHelper.LEFT){
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                return false;
+                moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                Task task = mTaskList.get(viewHolder.getAdapterPosition());
-                mTaskManager.deleteTask(task.getUUID());
-                updateRecyclerView();
+                final int position = viewHolder.getAdapterPosition();
+                final Task task = mTaskList.get(position);
+
+                removeItem(viewHolder.getAdapterPosition());
                 Snackbar
-                        .make(view, "Deleted", Snackbar.LENGTH_SHORT)
+                        .make(view, R.string.snackbar_deleted, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.snackbar_undo, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                restoreItem(task, position);
+                            }
+                        })
                         .show();
             }
         }).attachToRecyclerView(mRecyclerView);
 
 
-        updateRecyclerView();
+        initRecyclerView();
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        updateRecyclerView();
+        initRecyclerView();
     }
 
 
@@ -90,11 +100,17 @@ public class TitlesListFragment extends Fragment{
             return;
         }
         if (requestCode == REQUEST_CODE) {
-            updateRecyclerView();
+            initRecyclerView();
         }
     }
 
-    public void updateRecyclerView() {
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    public void initRecyclerView() {
         mTaskList = mTaskManager.getTaskList();
         if (mTaskAdapter == null) {
             mTaskAdapter = new TaskAdapter();
@@ -105,6 +121,30 @@ public class TitlesListFragment extends Fragment{
             mTaskAdapter.notifyDataSetChanged();
         }
     }
+
+
+    //!!!not saving positions after reloading app!!!
+    public void moveItem(int oldPosition, int newPosition){
+        Task task = mTaskList.get(oldPosition);
+        mTaskList.remove(oldPosition);
+        mTaskList.add(newPosition, task);
+        mTaskAdapter.notifyItemMoved(oldPosition, newPosition);
+    }
+
+    public void removeItem(int position){
+        Task task = mTaskList.get(position);
+        mTaskList.remove(position);
+        mTaskManager.deleteTask(task.getUUID());
+        mTaskAdapter.notifyItemRemoved(position);
+    }
+
+    public void restoreItem(Task task, int position){
+        mTaskList.add(position, task);
+        mTaskManager.addTask(task);
+        mTaskAdapter.notifyItemInserted(position);
+    }
+
+
 
 
     private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
