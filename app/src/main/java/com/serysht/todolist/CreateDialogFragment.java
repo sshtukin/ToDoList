@@ -26,7 +26,6 @@ public class CreateDialogFragment extends DialogFragment {
     public static final String TAG = "CreateDialogFragment";
     public static final String EXTRA_DATE = "date";
     private static final int REQUEST_CODE = 1;
-    private static final String TOAST_ADD_TITLE = "You should add title";
 
     private EditText mTitle;
     private EditText mAdditional;
@@ -67,8 +66,20 @@ public class CreateDialogFragment extends DialogFragment {
                 }
                 else {
                     Toast.makeText(getContext(),
-                    TOAST_ADD_TITLE,
-                    Toast.LENGTH_SHORT).show();
+                            R.string.missing_title_warning,
+                            Toast.LENGTH_SHORT).show();
+                }
+
+                if (mTask.isDateEnabled()) {
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.add(Calendar.SECOND, 25);
+
+                    Intent intent = new Intent("com.serysht.DISPLAY_NOTIFICATION");
+
+                    PendingIntent broadcast = PendingIntent.getBroadcast(getContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
                 }
             }
         });

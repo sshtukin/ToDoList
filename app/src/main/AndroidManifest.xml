@@ -18,6 +18,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".OpenedListActivity"></activity>
+
+        <receiver android:name=".AlarmReceiver">
+            <intent-filter>
+                <action android:name="com.serysht.DISPLAY_NOTIFICATION"/>
+            </intent-filter>
+        </receiver>
+
     </application>
+
 
 </manifest>

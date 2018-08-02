@@ -35,6 +35,7 @@ public class DatePickerFragment extends DialogFragment {
         final int day = calendar.get(Calendar.DAY_OF_MONTH);
 
         final DatePicker mDatePicker = view.findViewById(R.id.dialog_date_picker);
+        mDatePicker.setMinDate(System.currentTimeMillis());
         mDatePicker.init(year, month, day, null);
 
         return new AlertDialog.Builder(getActivity())

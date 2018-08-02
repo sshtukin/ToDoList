@@ -5,4 +5,7 @@
     <string name="save">Save</string>
     <string name="snackbar_deleted">Deleted</string>
     <string name="snackbar_undo">UNDO</string>
+    <string name="missing_title_warning">You should add title</string>
+    <string name="notification_text">You have tasks for today</string>
+    <string name="notification_title">ToDoList</string>
 </resources>
