@@ -71,15 +71,15 @@ public class CreateDialogFragment extends DialogFragment {
                 }
 
                 if (mTask.isDateEnabled()) {
-                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.add(Calendar.SECOND, 25);
-
-                    Intent intent = new Intent("com.serysht.DISPLAY_NOTIFICATION");
-
-                    PendingIntent broadcast = PendingIntent.getBroadcast(getContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
+//                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+//
+//                    Calendar calendar = Calendar.getInstance();
+//                    calendar.add(Calendar.SECOND, 25);
+//
+//                    Intent intent = new Intent("com.serysht.DISPLAY_NOTIFICATION");
+//
+//                    PendingIntent broadcast = PendingIntent.getBroadcast(getContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
                 }
             }
         });

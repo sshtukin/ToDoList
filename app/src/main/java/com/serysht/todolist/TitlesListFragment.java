@@ -25,6 +25,7 @@ import android.widget.Toast;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TitlesListFragment extends Fragment{
@@ -88,6 +89,106 @@ public class TitlesListFragment extends Fragment{
         }).attachToRecyclerView(mRecyclerView);
 
         initRecyclerView();
+
+//        Task task;
+//
+//        task = new Task();
+//        task.setTitle("Task1");
+//        task.setAdditional("Go shopping");
+//        task.setDate(new Date());
+//        task.setDateEnabled(true);
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task2");
+//        task.setAdditional("Go shopping task 2");
+//        task.setDate(new Date());
+//        task.setDateEnabled(true);
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task3");
+//        task.setAdditional("Go shopping task 3");
+//        task.setDate(new Date());
+//        task.setDateEnabled(true);
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task4");
+//        task.setAdditional("Go shopping task 4");
+//        task.setDate(new Date());
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task5");
+//        task.setAdditional("Go shopping task 5");
+//        task.setDate(new Date());
+//        task.setDateEnabled(true);
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task6");
+//        task.setAdditional("without date in task 6");
+//
+//        mTaskManager.addTask(task);
+//
+//        task = new Task();
+//        task.setTitle("Task7");
+//        task.setAdditional("without date in task 7");
+//
+//
+//        mTaskManager.addTask(task);
+//
+//
+//
+//        task = new Task();
+//        task.setTitle("Task8");
+//        task.setAdditional(" but in task 8");
+//
+//
+//        mTaskManager.addTask(task);
+//
+//
+//
+//        task = new Task();
+//        task.setTitle("Task8");
+//        task.setAdditional("but in task 8");
+//
+//
+//        mTaskManager.addTask(task);
+//
+//
+//
+//        task = new Task();
+//        task.setTitle("Task9");
+//        task.setAdditional(" in task 9");
+//
+//
+//        mTaskManager.addTask(task);
+//
+//
+//
+//        task = new Task();
+//        task.setTitle("Task10");
+//        task.setAdditional("Random text");
+//
+//
+//        mTaskManager.addTask(task);
+//
+//
+//        task = new Task();
+//        task.setTitle("Task11");
+//        task.setAdditional("Random text11");
+//
+//
+//        mTaskManager.addTask(task);
+
+
         return view;
     }
 
@@ -104,7 +205,11 @@ public class TitlesListFragment extends Fragment{
             return;
         }
         if (requestCode == REQUEST_CODE) {
-            initRecyclerView();
+            mTaskList = mTaskManager.getTaskList();
+            mTaskAdapter.setTasks(mTaskList);
+            mTaskAdapter.notifyItemInserted(0);
+            mTaskAdapter.notifyItemChanged(0);
+            mRecyclerView.scrollToPosition(0);
         }
     }
 
@@ -215,6 +320,11 @@ public class TitlesListFragment extends Fragment{
         @Override
         public int getItemCount() {
             return mTaskList.size();
+        }
+
+        public int getItemViewType(int position)
+        {
+            return position;
         }
     }
 }
