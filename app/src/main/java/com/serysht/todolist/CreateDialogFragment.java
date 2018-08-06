@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,15 +72,17 @@ public class CreateDialogFragment extends DialogFragment {
                 }
 
                 if (mTask.isDateEnabled()) {
-//                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-//
-//                    Calendar calendar = Calendar.getInstance();
-//                    calendar.add(Calendar.SECOND, 25);
-//
-//                    Intent intent = new Intent("com.serysht.DISPLAY_NOTIFICATION");
-//
-//                    PendingIntent broadcast = PendingIntent.getBroadcast(getContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
+                    AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+
+                    Calendar calendar = Calendar.getInstance();
+                    Date date = new Date();
+                    date.setTime(mTask.getDate().getTime()+36000000);//10 am
+                    calendar.setTime(date);
+
+                    Intent intent = new Intent("com.serysht.DISPLAY_NOTIFICATION");
+
+                    PendingIntent broadcast = PendingIntent.getBroadcast(getContext(), 100, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), broadcast);
                 }
             }
         });
@@ -93,6 +96,7 @@ public class CreateDialogFragment extends DialogFragment {
                 dialog.show(manager, DatePickerFragment.TAG);
             }
         });
+
         return view;
     }
 

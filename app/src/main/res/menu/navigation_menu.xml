@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/title"
         android:title="Created by Sergey Shtukin" />
-
-    <item android:title="Here will be theme switch"/>
-
-
-
 </menu>

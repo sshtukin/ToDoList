@@ -61,8 +61,8 @@ public class TitlesListFragment extends Fragment{
                 new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(itemDecoration);
 
-        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN,
-                                    ItemTouchHelper.LEFT){
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,
+                ItemTouchHelper.LEFT){
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
@@ -89,106 +89,6 @@ public class TitlesListFragment extends Fragment{
         }).attachToRecyclerView(mRecyclerView);
 
         initRecyclerView();
-
-//        Task task;
-//
-//        task = new Task();
-//        task.setTitle("Task1");
-//        task.setAdditional("Go shopping");
-//        task.setDate(new Date());
-//        task.setDateEnabled(true);
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task2");
-//        task.setAdditional("Go shopping task 2");
-//        task.setDate(new Date());
-//        task.setDateEnabled(true);
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task3");
-//        task.setAdditional("Go shopping task 3");
-//        task.setDate(new Date());
-//        task.setDateEnabled(true);
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task4");
-//        task.setAdditional("Go shopping task 4");
-//        task.setDate(new Date());
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task5");
-//        task.setAdditional("Go shopping task 5");
-//        task.setDate(new Date());
-//        task.setDateEnabled(true);
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task6");
-//        task.setAdditional("without date in task 6");
-//
-//        mTaskManager.addTask(task);
-//
-//        task = new Task();
-//        task.setTitle("Task7");
-//        task.setAdditional("without date in task 7");
-//
-//
-//        mTaskManager.addTask(task);
-//
-//
-//
-//        task = new Task();
-//        task.setTitle("Task8");
-//        task.setAdditional(" but in task 8");
-//
-//
-//        mTaskManager.addTask(task);
-//
-//
-//
-//        task = new Task();
-//        task.setTitle("Task8");
-//        task.setAdditional("but in task 8");
-//
-//
-//        mTaskManager.addTask(task);
-//
-//
-//
-//        task = new Task();
-//        task.setTitle("Task9");
-//        task.setAdditional(" in task 9");
-//
-//
-//        mTaskManager.addTask(task);
-//
-//
-//
-//        task = new Task();
-//        task.setTitle("Task10");
-//        task.setAdditional("Random text");
-//
-//
-//        mTaskManager.addTask(task);
-//
-//
-//        task = new Task();
-//        task.setTitle("Task11");
-//        task.setAdditional("Random text11");
-//
-//
-//        mTaskManager.addTask(task);
-
-
         return view;
     }
 
@@ -200,23 +100,8 @@ public class TitlesListFragment extends Fragment{
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode != Activity.RESULT_OK) {
-            return;
-        }
-        if (requestCode == REQUEST_CODE) {
-            mTaskList = mTaskManager.getTaskList();
-            mTaskAdapter.setTasks(mTaskList);
-            mTaskAdapter.notifyItemInserted(0);
-            mTaskAdapter.notifyItemChanged(0);
-            mRecyclerView.scrollToPosition(0);
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
-
     }
 
     public void initRecyclerView() {
@@ -245,15 +130,30 @@ public class TitlesListFragment extends Fragment{
         mTaskList.remove(position);
         mTaskManager.deleteTask(task.getUUID());
         mTaskAdapter.notifyItemRemoved(position);
+        //initRecyclerView();
     }
 
     public void restoreItem(Task task, int position){
         mTaskList.add(position, task);
         mTaskManager.addTask(task);
         mTaskAdapter.notifyItemInserted(position);
+       // initRecyclerView();
     }
 
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE) {
+            mTaskList = mTaskManager.getTaskList();
+            mTaskAdapter.setTasks(mTaskList);
+            mTaskAdapter.notifyItemInserted(0);
+            mTaskAdapter.notifyItemChanged(0);
+            mRecyclerView.scrollToPosition(0);
+        }
+    }
 
 
     private class TaskHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -275,17 +175,29 @@ public class TitlesListFragment extends Fragment{
             mTask = task;
             mTaskTitle.setText(task.getTitle());
 
+
             if (!mTask.isDateEnabled()){
-                mTaskDate.setVisibility(View.INVISIBLE);
+                mTaskDate.setVisibility(View.GONE);
             }
+            else {
+                mTaskDate.setVisibility(View.VISIBLE);
+            }
+
             if(DateUtils.isToday (mTask.getDate().getTime())){
                 mTaskDate.setBackgroundColor(Color.RED);
             }
+            else {
+                mTaskDate.setBackgroundResource(R.color.holo_green);
+            }
+
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM");
             mTaskDate.setText(dateFormat.format(mTask.getDate()));
 
             if (task.getAdditional().equals("")){
                 mTaskAdditional.setVisibility(View.GONE);
+            }
+            else{
+                mTaskAdditional.setVisibility(View.VISIBLE);
             }
             mTaskAdditional.setText(task.getAdditional());
         }
