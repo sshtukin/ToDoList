@@ -1,5 +1,5 @@
 # ToDoList
-Simple ToDoList android app with notifications, based on RecyclerViews.
+Simple ToDoList android app with notifications, based on RecyclerViews and CardViews.
 
 ### Adding task
 
