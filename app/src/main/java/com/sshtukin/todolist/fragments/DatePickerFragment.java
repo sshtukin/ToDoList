@@ -1,4 +1,4 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,6 +11,8 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+
+import com.sshtukin.todolist.R;
 
 import java.util.Calendar;
 import java.util.Date;

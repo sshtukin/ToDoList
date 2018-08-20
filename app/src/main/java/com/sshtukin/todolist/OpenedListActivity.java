@@ -1,4 +1,4 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.sshtukin.todolist.fragments.OpenedListFragment;
 
 import java.util.UUID;
 

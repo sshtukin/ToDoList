@@ -1,4 +1,4 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,10 +17,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
+
+import com.sshtukin.todolist.R;
+import com.sshtukin.todolist.model.Task;
+import com.sshtukin.todolist.model.TaskManager;
 
 import java.text.DateFormat;
 import java.util.ArrayList;

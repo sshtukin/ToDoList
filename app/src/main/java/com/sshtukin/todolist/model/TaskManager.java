@@ -1,18 +1,18 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist.model;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.serysht.todolist.database.TaskBaseHelper;
-import com.serysht.todolist.database.TaskCursorWrapper;
+import com.sshtukin.todolist.database.TaskBaseHelper;
+import com.sshtukin.todolist.database.TaskCursorWrapper;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-import static com.serysht.todolist.database.TaskValuesWrapper.getContentValues;
+import static com.sshtukin.todolist.database.TaskValuesWrapper.getContentValues;
 
 public class TaskManager {
     private static TaskManager mTaskManager;

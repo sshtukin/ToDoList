@@ -1,8 +1,8 @@
-package com.serysht.todolist.database;
+package com.sshtukin.todolist.database;
 
 import android.content.ContentValues;
 
-import com.serysht.todolist.Task;
+import com.sshtukin.todolist.model.Task;
 
 public class TaskValuesWrapper {
 

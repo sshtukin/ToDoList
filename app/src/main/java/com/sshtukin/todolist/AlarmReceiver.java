@@ -1,4 +1,4 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist;
 
 import android.app.Notification;
 

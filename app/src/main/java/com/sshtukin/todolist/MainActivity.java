@@ -1,4 +1,4 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist;
 
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import com.sshtukin.todolist.fragments.CreateDialogFragment;
+import com.sshtukin.todolist.fragments.TitlesListFragment;
 
 public class MainActivity extends AppCompatActivity {
 

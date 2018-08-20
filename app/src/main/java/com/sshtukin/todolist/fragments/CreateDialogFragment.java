@@ -1,8 +1,7 @@
-package com.serysht.todolist;
+package com.sshtukin.todolist.fragments;
 
 import android.app.Activity;
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,13 +10,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.sshtukin.todolist.R;
+import com.sshtukin.todolist.model.Task;
+import com.sshtukin.todolist.model.TaskManager;
 
 import java.text.DateFormat;
 import java.util.Calendar;

@@ -1,9 +1,9 @@
-package com.serysht.todolist.database;
+package com.sshtukin.todolist.database;
 
 import android.database.Cursor;
 import android.database.CursorWrapper;
 
-import com.serysht.todolist.Task;
+import com.sshtukin.todolist.model.Task;
 
 public class TaskCursorWrapper extends CursorWrapper {
 
